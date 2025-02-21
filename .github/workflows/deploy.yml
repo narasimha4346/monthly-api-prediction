@@ -3,11 +3,11 @@ name: FastAPI Deployment on Windows
 on:
   push:
     branches:
-      - master  # Make sure this matches your Git branch
+      - master  # Ensure it matches your branch name
 
 jobs:
   deploy:
-    runs-on: windows-latest  # Use Windows runner
+    runs-on: windows-latest
 
     steps:
       - name: Checkout Code
@@ -21,8 +21,9 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install fastapi uvicorn pandas scikit-learn
 
       - name: Run FastAPI Server
         run: |
-          start /B uvicorn api.main:app --host 0.0.0.0 --port 8000
+          uvicorn api:app --host 0.0.0.0 --port 8000 &
+          echo "API is running at: http://127.0.0.1:8000/docs"
